@@ -231,6 +231,7 @@ function Terminal(options) {
 
   this.cols = options.cols || options.geometry[0];
   this.rows = options.rows || options.geometry[1];
+  this.dontEmitKeyPress = options.dontEmitKeyPress;
 
   // Act as though we are a node TTY stream:
   this.setRawMode;
@@ -2877,7 +2878,9 @@ Terminal.prototype.keyPress = function(ev) {
     return false;
   }
 
-  this.emit('keypress', key, ev);
+  if(!this.dontEmitKeyPress){
+    this.emit('keypress', key, ev);
+  }
   this.emit('key', key, ev);
 
   this.showCursor();
